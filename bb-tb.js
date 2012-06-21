@@ -31,12 +31,27 @@
 
         },
 
-        addFastButtons: function() {
+        addFastButtons: function(events) {
 
-            var EVENT_NAME = 'fastclick';
-            var events = (_.isFunction(this.events) ? this.events() : this.events) || {};
+            var EVENT_NAME = 'click';
+            events = events || (_.isFunction(this.events) ? this.events() : this.events) || {};
+            
+            // Thomas: Forked: Replace click with fastclick
+            var newEvents = {};
+            _.each(events, function(value, key, list) {
+                if(key.substr(0, EVENT_NAME.length + 1) === EVENT_NAME + ' ' || key === EVENT_NAME) {
+                    
+                    var keyArray = key.split(' ');
+                    keyArray[0] = 'fastclick';
+                    key = keyArray.join(' ');
+                }
+
+                newEvents[key] = value;
+            }, this);
+            this.events = newEvents;
+            
             var that = this;
-
+            EVENT_NAME = 'fastclick';
             function byEventName(key) {
                 return key.substr(0, EVENT_NAME.length + 1) === EVENT_NAME + ' ' || key === EVENT_NAME;
             }
@@ -50,15 +65,14 @@
             }
 
             function registerTrigger(element) {
-                new MBP.fastButton(element, function() {
+                var temp = new MBP.fastButton(element, function() {
                     $(element).trigger(EVENT_NAME);
                 });
             }
 
-            _.chain(events).keys().filter(byEventName).map(toJustSelectors).map(toMatchingElements).flatten().each(registerTrigger);
+            _.chain(newEvents).keys().filter(byEventName).map(toJustSelectors).map(toMatchingElements).flatten().each(registerTrigger);
 
-        }
-
+        },
     });
 
     MBP.hadTouchEvent = true; // work around some Android 2.3.x workarounds for the demo...

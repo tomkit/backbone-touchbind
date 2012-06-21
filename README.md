@@ -1,3 +1,8 @@
+Forked
+======
+
+Make this support not having to replace 'click' with 'fastclick' everywhere. We'll do that in addFastButton(). I also override: Backbone's delegateEvent() in my base view to call addFastButton so it supports both entry points: declaring events:{} at the top level of a view or via delegateEvents.
+
 backbone-touchbind
 ==================
 
