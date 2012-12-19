@@ -1,10 +1,22 @@
-Forked
-======
+#Forked:
 
-Make this support not having to replace 'click' with 'fastclick' everywhere. We'll do that in addFastButton(). I also override: Backbone's delegateEvent() in my base view to call addFastButton so it supports both entry points: declaring events:{} at the top level of a view or via delegateEvents.
+-Make this support 'fastclick'. E.g. in backbone's events object.
+<pre>
+var ChildView = BaseView.extend({
+    events : {
+        'fastclick #id' : 'onFastClick'
+    },
+    onFastClick : function(event) {
+        // code handler
+    }
+});
+</pre>
+
+-I also override: Backbone's delegateEvent() in my base view to call addFastButton so it supports both entry points: declaring events:{} at the top level of a view or via delegateEvents.
+
+---------------------------------------------------------
 
 backbone-touchbind
-==================
 
 Quick PoC to demonstrate convenient binding of "fastclick" events to [Backbone Views](http://documentcloud.github.com/backbone/).  The fastclicks (or "fast buttons") themselves are a solved problem, so I use the (lovely) [Mobile Boilerplate](http://html5boilerplate.com/mobile) for that.
 
